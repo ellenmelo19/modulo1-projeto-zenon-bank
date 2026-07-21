@@ -4,18 +4,18 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
- * Cliente envolvido em uma transação (origem ou destino),
+ * Cliente envolvido em uma transação (origem ou destinatário),
  * com saldos antes e depois da operação.
  *
  * <p>Corresponde às colunas {@code name*}, {@code oldbalance*} e {@code newbalance*} do CSV PaySim.</p>
  */
-public record Customer(
+public record TransactionCustomer(
         String name,
         BigDecimal oldBalance,
         BigDecimal newBalance
 ) {
 
-    public Customer {
+    public TransactionCustomer {
         Objects.requireNonNull(name, "name não pode ser nulo");
         Objects.requireNonNull(oldBalance, "oldBalance não pode ser nulo");
         Objects.requireNonNull(newBalance, "newBalance não pode ser nulo");
