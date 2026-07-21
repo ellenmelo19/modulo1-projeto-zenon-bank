@@ -20,16 +20,17 @@ public record Transaction(
 ) {
 
     public Transaction {
-        Objects.requireNonNull(type, "type não pode ser nulo");
-        Objects.requireNonNull(amount, "amount não pode ser nulo");
-        Objects.requireNonNull(origin, "origin não pode ser nulo");
-        Objects.requireNonNull(recipient, "recipient não pode ser nulo");
+        type = Objects.requireNonNull(type, "type should not be null");
+        amount = Objects.requireNonNull(amount, "amount should not be null");
+        origin = Objects.requireNonNull(origin, "origin should not be null");
+        recipient = Objects.requireNonNull(recipient, "recipient should not be null");
 
-        if (step < 0) {
-            throw new IllegalArgumentException("step não pode ser negativo");
+        if (step < 1) {
+            throw new IllegalArgumentException("step should be positive: " + step);
         }
+
         if (amount.signum() < 0) {
-            throw new IllegalArgumentException("amount não pode ser negativo");
+            throw new IllegalArgumentException("amount should be positive: " + amount);
         }
     }
 }
