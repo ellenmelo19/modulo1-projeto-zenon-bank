@@ -17,15 +17,15 @@ import java.util.Optional;
  */
 public class TransactionIngestor {
 
-    private static final int MAX_LINES = 1_000;
+    private static final int MAX_LINES = 50_000;
     private static final int EXPECTED_COLUMNS = 11;
 
     /**
-     * Lê as primeiras 1.000 linhas de dados do CSV (após o cabeçalho)
+     * Lê as primeiras 50.000 linhas de dados do CSV (após o cabeçalho)
      * e as transforma em uma lista de {@link Transaction} válidas.
      *
      * @param fileName caminho do arquivo CSV do PaySim
-     * @return lista com até 1.000 transações válidas importadas
+     * @return lista com até 50.000 transações válidas importadas
      * @throws IOException se ocorrer erro de leitura do arquivo
      */
     public List<Transaction> ingest(String fileName) throws IOException {
