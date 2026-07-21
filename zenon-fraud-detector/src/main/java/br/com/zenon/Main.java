@@ -1,41 +1,40 @@
 package br.com.zenon;
 
-import br.com.zenon.fraud.Customer;
 import br.com.zenon.fraud.Transaction;
-import br.com.zenon.fraud.TransactionType;
+import br.com.zenon.fraud.TransactionIngestor;
 
-import java.math.BigDecimal;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Ponto de entrada do detector de fraudes do Zenón Bank.
+ *
+ * <p>Testa a ingestão das primeiras 1.000 linhas do CSV PaySim
+ * e imprime as 10 primeiras transações importadas.</p>
  */
 public class Main {
 
+    private static final String DEFAULT_CSV_PATH =
+            "data/PS_20174392719_1491204439457_log.csv";
+
     public static void main(String[] args) {
-        Transaction transaction1 = new Transaction(
-                1,
-                TransactionType.PAYMENT,
-                new BigDecimal("9839.64"),
-                new Customer("C1231006815", new BigDecimal("170136.0"), new BigDecimal("160296.36")),
-                new Customer("M1979787155", new BigDecimal("0.0"), new BigDecimal("0.0")),
-                false,
-                false
-        );
+        String fileName = args.length > 0 ? args[0] : DEFAULT_CSV_PATH;
 
-        Transaction transaction2 = new Transaction(
-                743,
-                TransactionType.CASH_OUT,
-                new BigDecimal("850002.52"),
-                new Customer("C1280323807", new BigDecimal("850002.52"), new BigDecimal("0.0")),
-                new Customer("C873221189", new BigDecimal("6510099.11"), new BigDecimal("7360101.63")),
-                true,
-                false
-        );
+        TransactionIngestor ingestor = new TransactionIngestor();
 
-        System.out.println("=== Transação 1 ===");
-        System.out.println(transaction1);
-        System.out.println();
-        System.out.println("=== Transação 2 ===");
-        System.out.println(transaction2);
+        try {
+            List<Transaction> transactions = ingestor.ingest(fileName);
+
+            System.out.println("Total de transações importadas: " + transactions.size());
+            System.out.println();
+
+            int limit = Math.min(10, transactions.size());
+            for (int i = 0; i < limit; i++) {
+                System.out.println(transactions.get(i));
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo CSV: " + e.getMessage());
+            System.err.println("Caminho tentado: " + fileName);
+        }
     }
 }
